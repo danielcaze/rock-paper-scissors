@@ -45,7 +45,19 @@
   <style type="text/tailwindcss">
     @layer components {
       .game-button {
-        @apply shadow-[inset_0_-0.375rem_rgba(0,0,0,0.15)] bg-gradient-to-b  p-4 rounded-full w-full h-[7.5rem] max-w-[7.5rem] max-h-[7.5rem]
+        @apply shadow-[inset_0_-0.375rem_rgba(0,0,0,0.15)] bg-gradient-to-b  p-[3vw] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] max-w-[7.5rem] max-h-[7.5rem]
+      }
+
+      .game-button.paper {
+        @apply from-paper-gradient-from to-paper-gradient-to
+      }
+
+      .game-button.rock {
+        @apply from-rock-gradient-from to-rock-gradient-to
+      }
+
+      .game-button.scissors {
+        @apply from-scissors-gradient-from to-scissors-gradient-to
       }
 
       .game-button div {
@@ -53,7 +65,11 @@
       }
 
       .game-button div img {
-        @apply object-cover max-w-[min(100%,_2.5rem)]
+        @apply object-cover max-w-[min(50%,_2.5rem)]
+      }
+
+      .loading-pick {
+        @apply bg-[rgba(0,0,0,0.15)] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] flex items-center justify-center
       }
     }
 
@@ -79,7 +95,7 @@
       </button>
     </div>
 
-    <header class="header border-2 border-solid border-header-outline rounded p-2 pl-4 flex items-center justify-between">
+    <header id="header" class="border-2 border-solid border-header-outline rounded p-2 pl-4 flex items-center justify-between">
       <h1 class="text-white leading-4 font-bold uppercase flex flex-col gap-[0.1rem]">
         <span>Rock</span>
         <span>Paper</span>
@@ -91,27 +107,49 @@
       </div>
     </header>
 
-    <main class="main flex justify-center items-center flex-wrap gap-x-[50px] gap-y-[25px] relative z-[0] before:content-[''] before:bg-[url('./images/bg-triangle.svg')] before:bg-cover before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[200px] before:h-[200px]">
-      <button id="paper-button" class="content-auto game-button from-paper-gradient-from to-paper-gradient-to">
-        <div>
-          <img src="./images/icon-paper.svg" />
-        </div>
-      </button>
+    <main id="main">
+      <div id="first-step" class="flex justify-center items-center flex-wrap gap-x-[3.125rem] gap-y-[1.563rem] relative z-[0] before:content-[''] before:bg-[url('./images/bg-triangle.svg')] before:bg-cover before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[12.5rem] before:h-[12.5rem]">
+        <button id="paper-button" class="game-button paper">
+          <div>
+            <img src="./images/icon-paper.svg" />
+          </div>
+        </button>
 
-      <button id="scissors-button" class="game-button from-scissors-gradient-from to-scissors-gradient-to">
-        <div>
-          <img src="./images/icon-scissors.svg" />
-        </div>
-      </button>
+        <button id="scissors-button" class="game-button scissors">
+          <div>
+            <img src="./images/icon-scissors.svg" />
+          </div>
+        </button>
 
-      <button id="rock-button" class="game-button from-rock-gradient-from to-rock-gradient-to">
-        <div>
-          <img src="./images/icon-rock.svg" />
+        <button id="rock-button" class="game-button rock">
+          <div>
+            <img src="./images/icon-rock.svg" />
+          </div>
+        </button>
+      </div>
+
+      <div id="second-step" class="hidden justify-around gap-2">
+        <div class="flex flex-col items-center gap-4">
+          <div id="your-pick" class="loading-pick">
+            <div>
+              <img src="" alt="">
+            </div>
+          </div>
+          <strong class="font-bold uppercase text-white text tracking-[0.1rem] text-center">You picked</strong>
         </div>
-      </button>
+
+        <div class="flex flex-col items-center gap-4">
+          <div id="house-pick" class="loading-pick">
+            <div>
+              <img src="" alt="">
+            </div>
+          </div>
+          <strong class="font-bold uppercase text-white text tracking-[0.1rem] text-center">The house picked</strong>
+        </div>
+      </div>
     </main>
 
-    <footer class="footer flex items-center justify-center">
+    <footer id="footer" class="flex items-center justify-center">
       <button id="show-rules" class="uppercase border-white border-[0.063rem] border-solid rounded-md text-white font-bold px-7 py-1 tracking-[0.2rem]">
         Rules
       </button>
