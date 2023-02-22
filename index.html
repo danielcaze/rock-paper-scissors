@@ -61,11 +61,24 @@
       * {
         @apply font-default
       }
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <section class="w-full h-full min-h-screen bg-gradient-to-b from-radial-gradient-from to-radial-gradient-to p-8 flex flex-col justify-between">
+  <section class="w-full h-full min-h-screen bg-gradient-to-b from-radial-gradient-from to-radial-gradient-to p-8 flex flex-col justify-between relative">
+    <div class="modal h-full w-full hidden bg-white fixed inset-0 flex-col items-center justify-between gap-8 p-10 py-14">
+      <h4 class="uppercase text-dark-text text-3xl font-bold">Rules</h4>
+      <img src="./images/image-rules.svg" alt="Rules: scissors beats paper, papel beats rock, rock beats scissors" class="max-w">
+      <button id="close-rules">
+        <img src="./images/icon-close.svg" alt="close">
+      </button>
+    </div>
+
     <header class="header border-2 border-solid border-header-outline rounded p-2 pl-4 flex items-center justify-between">
       <h1 class="text-white leading-4 font-bold uppercase flex flex-col gap-[0.1rem]">
         <span>Rock</span>
@@ -79,19 +92,19 @@
     </header>
 
     <main class="main flex justify-center items-center flex-wrap gap-x-[50px] gap-y-[25px] relative z-[0] before:content-[''] before:bg-[url('./images/bg-triangle.svg')] before:bg-cover before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[200px] before:h-[200px]">
-      <button class="content-auto paper game-button from-paper-gradient-from to-paper-gradient-to">
+      <button id="paper-button" class="content-auto game-button from-paper-gradient-from to-paper-gradient-to">
         <div>
           <img src="./images/icon-paper.svg" />
         </div>
       </button>
 
-      <button class="scissors game-button from-scissors-gradient-from to-scissors-gradient-to">
+      <button id="scissors-button" class="game-button from-scissors-gradient-from to-scissors-gradient-to">
         <div>
           <img src="./images/icon-scissors.svg" />
         </div>
       </button>
 
-      <button class="rock game-button from-rock-gradient-from to-rock-gradient-to">
+      <button id="rock-button" class="game-button from-rock-gradient-from to-rock-gradient-to">
         <div>
           <img src="./images/icon-rock.svg" />
         </div>
@@ -99,8 +112,8 @@
     </main>
 
     <footer class="footer flex items-center justify-center">
-      <button class="border-white border-[0.063rem] border-solid rounded-md text-white font-bold px-7 py-1 tracking-[0.2rem]">
-        RULES
+      <button id="show-rules" class="uppercase border-white border-[0.063rem] border-solid rounded-md text-white font-bold px-7 py-1 tracking-[0.2rem]">
+        Rules
       </button>
     </footer>
   </section>
