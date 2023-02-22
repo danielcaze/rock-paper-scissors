@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
+  <title>Rock, Paper, Scissors</title> 
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'dark-text': 'hsl(229, 25%, 31%)',
+            'score-text': 'hsl(229, 64%, 46%)',
+            'header-outline': 'hsl(217, 16%, 45%)',
+            
+            'radial-gradient-from': 'hsl(214, 47%, 23%)',
+            'radial-gradient-to': 'hsl(237, 49%, 15%)',
+            'scissors-gradient-from': 'hsl(39, 89%, 49%)',
+            'scissors-gradient-to': 'hsl(40, 84%, 53%)',
+            'paper-gradient-from': 'hsl(230, 89%, 62%)',
+            'paper-gradient-to': 'hsl(230, 89%, 65%)',
+            'rock-gradient-from': 'hsl(349, 71%, 52%)',
+            'rock-gradient-to': 'hsl(349, 70%, 56%)',
+            'lizard-gradient-from': 'hsl(261, 73%, 60%)',
+            'lizard-gradient-to': 'hsl(261, 72%, 63%)',
+            'spock-gradient-from': 'hsl(189, 59%, 53%)',
+            'spock-gradient-to': 'hsl(189, 58%, 57%)',
+          },
+          fontFamily: {
+            default: "'Barlow Semi Condensed', sans-serif"
+          },
+          fontWeight: {
+            semiBold: '600',
+            bold: '700  '
+          }
+        }
+      }
+    }
+    </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .game-button {
+        @apply shadow-[inset_0_-0.375rem_rgba(0,0,0,0.15)] bg-gradient-to-b  p-4 rounded-full w-full h-[7.5rem] max-w-[7.5rem] max-h-[7.5rem]
+      }
+
+      .game-button div {
+        @apply bg-white shadow-[inset_0_0.25rem_rgba(0,0,0,0.15)] rounded-full w-full h-full max-w-[7.5rem] max-h-[7.5rem] flex items-center justify-center
+      }
+
+      .game-button div img {
+        @apply object-cover max-w-[min(100%,_2.5rem)]
+      }
+    }
+
+    @layer utilities {
+      * {
+        @apply font-default
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="w-full h-full min-h-screen bg-gradient-to-b from-radial-gradient-from to-radial-gradient-to p-8 flex flex-col justify-between">
+    <header class="header border-2 border-solid border-header-outline rounded p-2 pl-4 flex items-center justify-between">
+      <h1 class="text-white leading-4 font-bold uppercase flex flex-col gap-[0.1rem]">
+        <span>Rock</span>
+        <span>Paper</span>
+        <span>Scissors</span>
+      </h1>
+      <div class="flex flex-col items-center justify-between bg-white rounded py-1 px-4">
+        <strong class="text-score-text uppercase text-[0.625rem] font-bold">Score</strong>
+        <span class="text-dark-text text-4xl font-bold">12</span>
+      </div>
+    </header>
+
+    <main class="main flex justify-center items-center flex-wrap gap-x-[50px] gap-y-[25px] relative z-[0] before:content-[''] before:bg-[url('./images/bg-triangle.svg')] before:bg-cover before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[200px] before:h-[200px]">
+      <button class="content-auto paper game-button from-paper-gradient-from to-paper-gradient-to">
+        <div>
+          <img src="./images/icon-paper.svg" />
+        </div>
+      </button>
+
+      <button class="scissors game-button from-scissors-gradient-from to-scissors-gradient-to">
+        <div>
+          <img src="./images/icon-scissors.svg" />
+        </div>
+      </button>
+
+      <button class="rock game-button from-rock-gradient-from to-rock-gradient-to">
+        <div>
+          <img src="./images/icon-rock.svg" />
+        </div>
+      </button>
+    </main>
+
+    <footer class="footer flex items-center justify-center">
+      <button class="border-white border-[0.063rem] border-solid rounded-md text-white font-bold px-7 py-1 tracking-[0.2rem]">
+        RULES
+      </button>
+    </footer>
+  </section>
+</body>
+</html>
