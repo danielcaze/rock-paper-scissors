@@ -45,7 +45,7 @@
   <style type="text/tailwindcss">
     @layer components {
       .game-button {
-        @apply shadow-[inset_0_-0.375rem_rgba(0,0,0,0.15)] bg-gradient-to-b  p-[3vw] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] max-w-[7.5rem] max-h-[7.5rem] z-0
+        @apply shadow-[inset_0_-0.375rem_rgba(0,0,0,0.15)] bg-gradient-to-b  p-[min(3vw,_0.625rem)] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] max-w-[7.5rem] max-h-[7.5rem] z-0
       }
 
       .game-button.paper {
@@ -60,6 +60,14 @@
         @apply from-scissors-gradient-from to-scissors-gradient-to
       }
 
+      .game-button.lizard {
+        @apply from-lizard-gradient-from to-lizard-gradient-to
+      }
+
+      .game-button.spock {
+        @apply from-spock-gradient-from to-spock-gradient-to
+      }
+
       .game-button div {
         @apply bg-white shadow-[inset_0_0.25rem_rgba(0,0,0,0.15)] rounded-full w-full h-full max-w-[7.5rem] max-h-[7.5rem] flex items-center justify-center
       }
@@ -69,7 +77,11 @@
       }
 
       .loading-pick {
-        @apply bg-[rgba(0,0,0,0.15)] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] flex items-center justify-center z-0
+        @apply bg-[rgba(0,0,0,0.15)] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] flex items-center justify-center z-[1]
+      }
+
+      .advanced-button {
+        @apply absolute
       }
     }
 
@@ -110,20 +122,22 @@
       </button>
     </div>
 
-    <header id="header" class="border-2 border-solid border-header-outline rounded p-2 pl-4 flex items-center justify-between min-w-[min-content] gap-2">
+    <header id="header" class="border-2 border-solid border-header-outline rounded p-2 pl-4 min-w-[min-content] gap-x-2 w-[calc(100vw_-_4rem)] grid grid-cols-2 items-center">
       <h1 class="text-white leading-4 font-bold uppercase flex flex-col gap-[0.1rem]">
-        <span>Rock</span>
-        <span>Paper</span>
-        <span>Scissors</span>
+        <span class="w-full truncate">Rock</span>
+        <span class="w-full truncate">Paper</span>
+        <span class="w-full truncate">Scissors</span>
+        <span class="w-full truncate advanced !hidden">Lizard</span>
+        <span class="w-full truncate advanced !hidden">Spock</span>
       </h1>
-      <div class="flex flex-col items-center justify-between bg-white rounded py-1 px-4">
+      <div class="place-self-end flex flex-col items-center justify-between bg-white rounded py-1 px-4 max-w-full h-full w-[80px]">
         <strong class="text-score-text uppercase text-[0.625rem] font-bold">Score</strong>
-        <span id="score" class="text-dark-text text-4xl font-bold">0</span>
+        <span id="score" class="text-dark-text text-4xl font-bold max-w-full truncate">0</span>
       </div>
     </header>
 
     <main id="main">
-      <div id="first-step" class="flex justify-center items-center flex-wrap gap-x-[3.125rem] gap-y-[1.563rem] relative z-[0] before:content-[''] before:bg-[url('./images/bg-triangle.svg')] before:bg-cover before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[12.5rem] before:h-[12.5rem]">
+      <div id="normal-first-step" class="flex justify-center items-center flex-wrap gap-x-[3.125rem] gap-y-[1.563rem] relative z-[0] before:content-[''] before:bg-[url('./images/bg-triangle.svg')] before:bg-cover before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[min(12.5rem,_100%)] before:h-[min(12.5rem,_100%)]">
         <button id="paper-button" class="game-button paper">
           <div>
             <img src="./images/icon-paper.svg" />
@@ -143,14 +157,47 @@
         </button>
       </div>
 
-      <div id="second-step" class="hidden justify-around gap-2">
+      <div id="advanced-first-step" class="!hidden w-[min(329px,_100%)] h-[313px] mx-auto relative z-[0] before:content-[''] before:bg-[url('./images/bg-pentagon.svg')] before:bg-cover before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[329px] before:h-[313px] before:max-w-full before:max-h-full before:top-0 before:left-[50%] before:translate-x-[-50%]">
+
+        <button id="advanced-paper-button" class="game-button paper advanced-button top-[-30px] left-[50%] translate-x-[-50%]">
+          <div>
+            <img src="./images/icon-paper.svg" />
+          </div>
+        </button>
+
+        <button id="advanced-scissors-button" class="game-button scissors advanced-button top-[70px] left-[max(calc(50%_-_170px),_1vw)] translate-x-[-max(calc(50%_-_170px),_1vw)]">
+          <div>
+            <img src="./images/icon-scissors.svg" />
+          </div>
+        </button>
+
+        <button id="advanced-rock-button" class="game-button rock advanced-button top-[210px] left-[max(calc(50%_-_140px),_1vw)] translate-x-[-max(calc(50%_-_140px),_1vw)]">
+          <div>
+            <img src="./images/icon-rock.svg" />
+          </div>
+        </button>
+
+        <button id="advanced-lizard-button" class="game-button lizard advanced-button top-[70px] right-[max(calc(50%_-_170px),_1vw)]">
+          <div>
+            <img src="./images/icon-lizard.svg" />
+          </div>
+        </button>
+
+        <button id="advanced-spock-button" class="game-button spock advanced-button top-[210px] right-[max(calc(50%_-_140px),_1vw)]">
+          <div>
+            <img src="./images/icon-spock.svg" />
+          </div>
+        </button>
+      </div>
+
+      <div id="second-step" class="hidden justify-center gap-x-[3.125rem]">
         <div class="flex flex-col items-center gap-4">
           <div id="your-pick" class="loading-pick">
             <div>
               <img src="" alt="">
             </div>
           </div>
-          <strong class="font-bold uppercase text-white text tracking-[0.1rem] text-center z-0">You picked</strong>
+          <strong class="font-bold uppercase text-white text tracking-[0.1rem] text-center z-0 text-[0.625rem]">You picked</strong>
         </div>
 
         <div class="flex flex-col items-center gap-4">
@@ -159,7 +206,7 @@
               <img src="" alt="">
             </div>
           </div>
-          <strong class="font-bold uppercase text-white text tracking-[0.1rem] text-center z-0">The house picked</strong>
+          <strong class="font-bold uppercase text-white text tracking-[0.1rem] text-center z-0 text-[0.625rem]">The house picked</strong>
         </div>
       </div>
     </main>
@@ -169,9 +216,14 @@
         <h4 class="font-bold text-5xl uppercase text-white text-center"></h4>
         <button id="play-again" class="bg-white text-dark-text rounded-md py-2 uppercase tracking-[0.1rem]">Play again</button>
       </div>
-      <button id="show-rules" class="uppercase border-white border-[0.063rem] border-solid rounded-md text-white font-bold px-7 py-1 tracking-[0.2rem]">
-        Rules
-      </button>
+      <div class="grid grid-cols-2 items-center justify-between gap-2 w-full">
+        <button id="toggle-mode" class="uppercase border-white border-[0.063rem] border-solid rounded-md text-white font-bold p-1 tracking-[0.2rem] truncate">
+          Advanced
+        </button>
+        <button id="show-rules" class="uppercase border-white border-[0.063rem] border-solid rounded-md text-white font-bold p-1 tracking-[0.2rem]">
+          Rules
+        </button>
+      </div>
     </footer>
   </section>
   <script type="text/javascript" src="./script.js"></script>

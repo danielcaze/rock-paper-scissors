@@ -1,23 +1,33 @@
 const rules = document.querySelector('#rules');
+const toggleMode = document.querySelector('#toggle-mode');
 const showRulesButton = document.querySelector('#show-rules');
 const closeRulesButton = document.querySelector('#close-rules');
 
 const rockButton = document.querySelector('#rock-button');
 const paperButton = document.querySelector('#paper-button');
-const scissorsButton = document.querySelector('#scissors-button');
+const advancedScissorsButton = document.querySelector('#scissors-button');
+const advancedRockButton = document.querySelector('#advanced-rock-button');
+const advancedPaperButton = document.querySelector('#advanced-paper-button');
+const scissorsButton = document.querySelector('#advanced-scissors-button');
+const lizardButton = document.querySelector('#advanced-lizard-button');
+const spockButton = document.querySelector('#advanced-spock-button');
 
-const firstStep = document.querySelector('#first-step');
+const normalFirstStep = document.querySelector('#normal-first-step');
+const advancedFirstStep = document.querySelector('#advanced-first-step');
 const secondStep = document.querySelector('#second-step');
 
 const yourPickDisplay = document.querySelector('#your-pick');
 const housePickDisplay = document.querySelector('#house-pick');
 
-const results = document.querySelector('#results')
-const score = document.querySelector('#score')
-const playAgainButton = document.querySelector('#play-again')
+const results = document.querySelector('#results');
+const score = document.querySelector('#score');
+const playAgainButton = document.querySelector('#play-again');
 
-const localStorageUrl = 'danielcaze:rock-paper-scissors@1.0.0'
+const normalModeLocalStorageUrl = 'danielcaze:normal-rock-paper-scissors@1.0.0';
+const advancedModeLocalStorageUrl = 'danielcaze:advanced-rock-paper-scissors@1.0.0';
+let isAdvancedModeSelected = false;
 let result = 0;
+let advancedResult = 0;
 let yourPick = '';
 let housePick = '';
 let isRulesOpen = false;
@@ -25,22 +35,32 @@ const Images = Object.freeze({
   rock: './images/icon-rock.svg',
   paper: './images/icon-paper.svg',
   scissors: './images/icon-scissors.svg',
+  lizard: './images/icon-lizard.svg',
+  spock: './images/icon-spock.svg',
 })
 const Values = Object.freeze({
   Rock: 'rock',
   Paper: 'paper',
   Scissors: 'scissors',
+  Lizard: 'lizard',
+  Spock: 'spock',
 });
 
 window.addEventListener('load', () => {
-  const previousValue = localStorage.getItem(localStorageUrl)
-  if (previousValue) {
-    result = Number(previousValue)
+  const previousNormalValue = localStorage.getItem(normalModeLocalStorageUrl);
+  const previousAdvancedValue = localStorage.getItem(advancedModeLocalStorageUrl);
+
+  if (previousNormalValue) {
+    result = Number(previousNormalValue);
     score.innerText = result;
+  }
+  if (previousAdvancedValue) {
+    advancedResult = Number(previousAdvancedValue);
   }
 })
 
 function toggleRules() {
+  rules.children[1].src = isAdvancedModeSelected ? './images/image-rules-bonus.svg' : './images/image-rules.svg'
   if (!isRulesOpen) {
     isRulesOpen = true;
     return rules.classList.add('!flex');
@@ -53,15 +73,16 @@ closeRulesButton.addEventListener('click', toggleRules);
 
 function handlePick(pick) {
   yourPick = Values[pick];
-  firstStep.classList.add('!hidden');
+  normalFirstStep.classList.add('!hidden');
+  advancedFirstStep.classList.add('!hidden');
   secondStep.classList.add('!flex');
   yourPickDisplay.classList.add('game-button', yourPick);
   yourPickDisplay.children[0].children[0].src = Images[yourPick];
 
-  setTimeout(handlehousePick, 3000)
+  setTimeout(handleHousePick, 3000);
 }
 
-function handlehousePick() {
+function handleHousePick() {
   const randomValue = Math.floor(Math.random() * 3);
   housePick = Object.keys(Values)[randomValue].toLowerCase();
   housePickDisplay.classList.add('game-button', housePick);
@@ -72,18 +93,49 @@ function handlehousePick() {
 rockButton.addEventListener('click', () => handlePick('Rock'));
 paperButton.addEventListener('click', () => handlePick('Paper'));
 scissorsButton.addEventListener('click', () => handlePick('Scissors'));
+advancedRockButton.addEventListener('click', () => handlePick('Rock'));
+advancedPaperButton.addEventListener('click', () => handlePick('Paper'));
+advancedScissorsButton.addEventListener('click', () => handlePick('Scissors'));
+lizardButton.addEventListener('click', () => handlePick('Lizard'));
+spockButton.addEventListener('click', () => handlePick('Spock'));
 
 function handleWinner() {
-  const userWin = (yourPick === 'rock' && housePick === 'scissors') || (yourPick === 'paper' && housePick === 'rock') || (yourPick === 'scissors' && housePick === 'paper')
-  const houseWin = (yourPick === 'scissors' && housePick === 'rock') || (yourPick === 'paper' && housePick === 'scissors') || (yourPick === 'rock' && housePick === 'paper')
+  const userWin = (yourPick === 'rock' && housePick === 'scissors')
+    || (yourPick === 'rock' && housePick === 'lizard')
+    || (yourPick === 'paper' && housePick === 'spock')
+    || (yourPick === 'paper' && housePick === 'rock')
+    || (yourPick === 'scissors' && housePick === 'paper')
+    || (yourPick === 'scissors' && housePick === 'lizard')
+    || (yourPick === 'lizard' && housePick === 'spock')
+    || (yourPick === 'lizard' && housePick === 'paper')
+    || (yourPick === 'spock' && housePick === 'scissors')
+    || (yourPick === 'spock' && housePick === 'rock')
+  const houseWin = (yourPick === 'scissors' && housePick === 'rock')
+    || (yourPick === 'scissors' && housePick === 'spock')
+    || (yourPick === 'paper' && housePick === 'scissors')
+    || (yourPick === 'paper' && housePick === 'lizard')
+    || (yourPick === 'rock' && housePick === 'paper')
+    || (yourPick === 'rock' && housePick === 'spock')
+    || (yourPick === 'lizard' && housePick === 'rock')
+    || (yourPick === 'lizard' && housePick === 'scissors')
+    || (yourPick === 'spock' && housePick === 'lizard')
+    || (yourPick === 'spock' && housePick === 'paper')
   const tie = yourPick === housePick
 
   if (userWin) {
-    result += 1;
+    if (isAdvancedModeSelected) {
+      advancedResult += 1;
+    } else {
+      result += 1;
+    }
     yourPickDisplay.classList.add('winner-pick');
     results.children[0].innerText = 'You win';
   } else if (houseWin) {
-    result -= 1;
+    if (isAdvancedModeSelected) {
+      advancedResult -= 1;
+    } else {
+      result -= 1;
+    }
     housePickDisplay.classList.add('winner-pick');
     results.children[0].innerText = 'You lose';
   } else if (tie) {
@@ -91,8 +143,15 @@ function handleWinner() {
     results.children[0].innerText = 'You tie';
     return
   }
-  score.innerText = result;
-  window.localStorage.setItem(localStorageUrl, String(result))
+
+  if (isAdvancedModeSelected) {
+    score.innerText = advancedResult;
+    window.localStorage.setItem(advancedModeLocalStorageUrl, String(advancedResult))
+  } else {
+    score.innerText = result;
+    window.localStorage.setItem(normalModeLocalStorageUrl, String(result))
+  }
+
 
   results.classList.add('!flex');
 }
@@ -103,10 +162,47 @@ function resetGame() {
   yourPickDisplay.classList.remove('winner-pick', 'rock', 'paper', 'scissors', 'game-button');
   housePickDisplay.classList.remove('winner-pick', 'rock', 'paper', 'scissors', 'game-button');
   results.classList.remove('!flex');
-  firstStep.classList.remove('!hidden');
   secondStep.classList.remove('!flex');
   yourPickDisplay.children[0].children[0].src = '';
   housePickDisplay.children[0].children[0].src = '';
+  if (isAdvancedModeSelected) {
+    advancedFirstStep.classList.remove('!hidden');
+  } else {
+    normalFirstStep.classList.remove('!hidden');
+  }
 }
 
 playAgainButton.addEventListener('click', resetGame);
+
+function toggleGameMode() {
+  const header = document.getElementById('header');
+  const titles = header.children[0].children;
+
+  resetGame();
+  if (!isAdvancedModeSelected) {
+    isAdvancedModeSelected = true;
+    score.innerText = advancedResult;
+    normalFirstStep.classList.add('!hidden');
+    advancedFirstStep.classList.remove('!hidden');
+    for (const span of titles) {
+      span.classList.add('text-rock-gradient-from');
+      if (span.classList.contains('advanced')) {
+        span.classList.remove('!hidden')
+      }
+    }
+    return
+  }
+  isAdvancedModeSelected = false;
+  score.innerText = result;
+  normalFirstStep.classList.remove('!hidden');
+  advancedFirstStep.classList.add('!hidden');
+  for (const span of titles) {
+    span.classList.remove('text-rock-gradient-from');
+    if (span.classList.contains('advanced')) {
+      span.classList.add('!hidden')
+    }
+  }
+  return
+}
+
+toggleMode.addEventListener('click', toggleGameMode)
