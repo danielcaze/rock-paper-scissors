@@ -77,11 +77,19 @@
       }
 
       .loading-pick {
-        @apply bg-[rgba(0,0,0,0.15)] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] flex items-center justify-center z-[1] md:h-[min(40vw,_15rem)] md:w-[min(40vw,_15rem)]
+        @apply bg-[rgba(0,0,0,0.15)] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] flex items-center justify-center z-[1] md:h-[min(40vw,_15rem)] md:w-[min(40vw,_15rem)] animate-[jokenpo_1.5s_linear]
       }
 
       .loading-pick.game-button div img {
         @apply md:w-full md:!max-w-[8rem]
+      }
+
+      .modal {
+        @apply !opacity-100 transition-[opacity] duration-[1s] !left-0
+      }
+      
+      .modal #rules {
+        @apply md:left-[50%]
       }
     }
 
@@ -109,7 +117,7 @@
         z-index: -1;
         box-shadow: 0 0 0 0.75rem #293251 , 0 0 0 1.5rem #232c4b, 0 0 0 2.25rem #1e2949;
       }
-
+      
       @media only screen and (min-width: 768px) {
         body:has(#rules-bg.\!block) {
           overflow-y: hidden;
@@ -137,12 +145,44 @@
         }
       }
     }
+
+    @keyframes jokenpo {
+      0% {
+        margin-top: 0;
+      }
+
+      16.5% {
+        margin-top: 100px;
+      }
+
+      33% {
+        margin-top: 0;
+      }
+
+      49.5% {
+        margin-top: 100px;
+      }
+
+      66% {
+        margin-top: 0;
+      }
+
+      82.5% {
+        margin-top: 100px;
+      }
+    }
+
+    @keyframes fade-in{
+      0% {
+
+      }
+    }
   </style>
 </head>
 <body>
   <section class="w-[full] h-[full] min-h-screen bg-gradient-to-b from-radial-gradient-from to-radial-gradient-to p-8 flex flex-col justify-between gap-20 relative">
-    <div id="rules-bg" class="w-screen h-screen bg-[rgba(0,0,0,0.4)] fixed z-[998] hidden top-0 left-0">
-      <div id="rules" class="h-full w-full hidden bg-white fixed inset-0 flex-col items-center justify-between gap-8 p-10 py-14 z-[999] md:w-[max-content] md:h-[max-content] md:p-5 md:py-5 md:top-[50%] md:left-[50%] md:translate-x-[-50%] md:translate-y-[-50%] md:rounded-xl">
+    <div id="rules-bg" class="w-screen h-screen bg-[rgba(0,0,0,0.4)] fixed z-[998] top-0 left-[100%] opacity-0">
+      <div id="rules" class="h-full w-full bg-white fixed inset-0 flex flex-col items-center justify-between gap-8 p-10 py-14 z-[999] md:w-[max-content] md:h-[max-content] md:p-5 md:py-5 md:top-[50%] md:translate-x-[-50%] md:translate-y-[-50%] md:rounded-xl left-[150%]">
         <header class="flex item-center justify-center md:justify-between w-full">
           <h4 class="uppercase text-dark-text text-3xl font-bold">Rules</h4>
           <button class="close-rules max-md:hidden">
@@ -172,19 +212,19 @@
 
     <main id="main">
       <div id="normal-first-step" class="w-[min(313px,_100%)] h-[278px] mx-auto relative z-[0] before:content-[''] before:bg-[url('./images/bg-triangle.svg')] before:bg-contain before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[min(313px,_100%)] before:h-full larger-triangle">
-        <button id="paper-button" class="game-button paper absolute top-[-20px] left-[-10px]">
+        <button id="paper-button" class="game-button paper absolute top-[-20px] left-[-10px] hover:scale-[1.1] hover:transition-[transform] hover:duration-[100ms]">
           <div>
             <img src="./images/icon-paper.svg" />
           </div>
         </button>
 
-        <button id="scissors-button" class="game-button scissors absolute top-[-20px] right-[-10px]">
+        <button id="scissors-button" class="game-button scissors absolute top-[-20px] right-[-10px] hover:scale-[1.1] hover:transition-[transform] hover:duration-[100ms]">
           <div>
             <img src="./images/icon-scissors.svg" />
           </div>
         </button>
 
-        <button id="rock-button" class="game-button rock absolute bottom-0 left-[50%] translate-x-[-50%]">
+        <button id="rock-button" class="game-button rock absolute bottom-0 left-[50%] translate-x-[-50%] hover:scale-[1.1] hover:transition-[transform] hover:duration-[100ms]">
           <div>
             <img src="./images/icon-rock.svg" />
           </div>
@@ -193,31 +233,31 @@
 
       <div id="advanced-first-step" class="!hidden w-[min(329px,_100%)] h-[313px] mx-auto relative z-[0] before:content-[''] before:bg-[url('./images/bg-pentagon.svg')] before:bg-contain before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[min(329px,_100%)] before:h-full before:top-0 before:left-[50%] before:translate-x-[-50%] larger-pentagon">
 
-        <button id="advanced-scissors-button" class="game-button scissors absolute top-[-30px] left-[50%] translate-x-[-50%]">
+        <button id="advanced-scissors-button" class="game-button scissors absolute top-[-30px] left-[50%] translate-x-[-50%] hover:scale-[1.1] hover:transition-[transform] hover:duration-[100ms]">
           <div>
             <img src="./images/icon-scissors.svg" />
           </div>
         </button>
 
-        <button id="advanced-spock-button" class="game-button spock absolute top-[70px] left-[max(calc(50%_-_170px),_1%)] translate-x-[-max(calc(50%_-_170px),_1%)] md:left-[calc(50%_-_250px)] md:translate-x-[-calc(50%_-_250px)]">
+        <button id="advanced-spock-button" class="game-button spock absolute top-[70px] left-[max(calc(50%_-_170px),_1%)]  md:left-[calc(50%_-_250px)]   hover:scale-[1.1] hover:transition-[transform] hover:duration-[100ms]">
           <div>
             <img src="./images/icon-spock.svg" />
           </div>
         </button>
 
-        <button id="advanced-lizard-button" class="game-button lizard absolute top-[210px] left-[max(calc(50%_-_140px),_10%)] translate-x-[-max(calc(50%_-_140px),_10%)] md:top-[270px] md:left-[calc(50%_-_200px)] md:translate-x-[-calc(50%_-_200px)]">
+        <button id="advanced-lizard-button" class="game-button lizard absolute top-[210px] left-[max(calc(50%_-_140px),_10%)]  md:top-[270px] md:left-[calc(50%_-_200px)]  hover:scale-[1.1] hover:transition-[transform] hover:duration-[100ms]">
           <div>
             <img src="./images/icon-lizard.svg" />
           </div>
         </button>
 
-        <button id="advanced-paper-button" class="game-button paper absolute top-[70px] right-[max(calc(50%_-_170px),_1%)] md:right-[calc(50%_-_250px)]">
+        <button id="advanced-paper-button" class="game-button paper absolute top-[70px] right-[max(calc(50%_-_170px),_1%)] md:right-[calc(50%_-_250px)] hover:scale-[1.1] hover:transition-[transform] hover:duration-[100ms]">
           <div>
             <img src="./images/icon-paper.svg" />
           </div>
         </button>
 
-        <button id="advanced-rock-button" class="game-button rock absolute top-[210px] right-[max(calc(50%_-_140px),_10%)] md:top-[270px] md:right-[calc(50%_-_200px)]">
+        <button id="advanced-rock-button" class="game-button rock absolute top-[210px] right-[max(calc(50%_-_140px),_10%)] md:top-[270px] md:right-[calc(50%_-_200px)] hover:scale-[1.1] hover:transition-[transform] hover:duration-[100ms]">
           <div>
             <img src="./images/icon-rock.svg" />
           </div>

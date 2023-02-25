@@ -64,13 +64,11 @@ function toggleRules() {
   rules.children[1].src = isAdvancedModeSelected ? './images/image-rules-bonus.svg' : './images/image-rules.svg'
   if (!isRulesOpen) {
     isRulesOpen = true;
-    rulesBG.classList.add('!block');
-    rules.classList.add('!flex');
+    rulesBG.classList.add('modal');
     return
   }
   isRulesOpen = false;
-  rulesBG.classList.remove('!block');
-  rules.classList.remove('!flex');
+  rulesBG.classList.remove('modal');
   return
 }
 showRulesButton.addEventListener('click', toggleRules);
@@ -84,7 +82,7 @@ function handlePick(pick) {
   yourPickDisplay.classList.add('game-button', yourPick);
   yourPickDisplay.children[0].children[0].src = Images[yourPick];
 
-  setTimeout(handleHousePick, 3000);
+  setTimeout(handleHousePick, 1500);
 }
 
 function handleHousePick() {
@@ -215,15 +213,13 @@ toggleMode.addEventListener('click', toggleGameMode)
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && isRulesOpen) {
     isRulesOpen = false;
-    rulesBG.classList.remove('!block');
-    rules.classList.remove('!flex');
+    rulesBG.classList.remove('modal');
   }
 })
 
 rulesBG.addEventListener('click', (event) => {
   if (event.target === rulesBG) {
     isRulesOpen = false;
-    rulesBG.classList.remove('!block');
-    rules.classList.remove('!flex');
+    rulesBG.classList.remove('modal');
   }
 })
