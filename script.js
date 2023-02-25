@@ -1,7 +1,8 @@
 const rules = document.querySelector('#rules');
+const rulesBG = document.querySelector('#rules-bg');
 const toggleMode = document.querySelector('#toggle-mode');
 const showRulesButton = document.querySelector('#show-rules');
-const closeRulesButton = document.querySelector('#close-rules');
+const closeRulesButton = document.querySelectorAll('.close-rules');
 
 const rockButton = document.querySelector('#rock-button');
 const paperButton = document.querySelector('#paper-button');
@@ -19,9 +20,9 @@ const secondStep = document.querySelector('#second-step');
 const yourPickDisplay = document.querySelector('#your-pick');
 const housePickDisplay = document.querySelector('#house-pick');
 
-const results = document.querySelector('#results');
 const score = document.querySelector('#score');
-const playAgainButton = document.querySelector('#play-again');
+const results = document.querySelectorAll('.results');
+const playAgainButton = document.querySelectorAll('.play-again');
 
 const normalModeLocalStorageUrl = 'danielcaze:normal-rock-paper-scissors@1.0.0';
 const advancedModeLocalStorageUrl = 'danielcaze:advanced-rock-paper-scissors@1.0.0';
@@ -63,13 +64,17 @@ function toggleRules() {
   rules.children[1].src = isAdvancedModeSelected ? './images/image-rules-bonus.svg' : './images/image-rules.svg'
   if (!isRulesOpen) {
     isRulesOpen = true;
-    return rules.classList.add('!flex');
+    rulesBG.classList.add('!block');
+    rules.classList.add('!flex');
+    return
   }
   isRulesOpen = false;
-  return rules.classList.remove('!flex');
+  rulesBG.classList.remove('!block');
+  rules.classList.remove('!flex');
+  return
 }
 showRulesButton.addEventListener('click', toggleRules);
-closeRulesButton.addEventListener('click', toggleRules);
+closeRulesButton.forEach(button => button.addEventListener('click', toggleRules));
 
 function handlePick(pick) {
   yourPick = Values[pick];
@@ -129,7 +134,7 @@ function handleWinner() {
       result += 1;
     }
     yourPickDisplay.classList.add('winner-pick');
-    results.children[0].innerText = 'You win';
+    results.forEach(div => div.children[0].innerText = 'You win');
   } else if (houseWin) {
     if (isAdvancedModeSelected) {
       advancedResult -= 1;
@@ -137,10 +142,10 @@ function handleWinner() {
       result -= 1;
     }
     housePickDisplay.classList.add('winner-pick');
-    results.children[0].innerText = 'You lose';
+    results.forEach(div => div.children[0].innerText = 'You lose');
   } else if (tie) {
-    results.classList.add('!flex');
-    results.children[0].innerText = 'You tie';
+    results.forEach((div, index) => div.classList.add(index + 1 === result.length ? 'md:!flex' : '!flex'));
+    results.forEach(div => div.children[0].innerText = 'You tie');
     return
   }
 
@@ -153,7 +158,7 @@ function handleWinner() {
   }
 
 
-  results.classList.add('!flex');
+  results.forEach((div, index) => div.classList.add(index + 1 === result.length ? 'md:!flex' : '!flex'));
 }
 
 function resetGame() {
@@ -161,7 +166,7 @@ function resetGame() {
   housePick = '';
   yourPickDisplay.classList.remove('winner-pick', 'rock', 'paper', 'scissors', 'game-button');
   housePickDisplay.classList.remove('winner-pick', 'rock', 'paper', 'scissors', 'game-button');
-  results.classList.remove('!flex');
+  results.forEach(div => div.classList.remove('!flex', 'md:!flex'));
   secondStep.classList.remove('!flex');
   yourPickDisplay.children[0].children[0].src = '';
   housePickDisplay.children[0].children[0].src = '';
@@ -172,7 +177,7 @@ function resetGame() {
   }
 }
 
-playAgainButton.addEventListener('click', resetGame);
+playAgainButton.forEach(button => button.addEventListener('click', resetGame));
 
 function toggleGameMode() {
   const header = document.getElementById('header');
@@ -206,3 +211,19 @@ function toggleGameMode() {
 }
 
 toggleMode.addEventListener('click', toggleGameMode)
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && isRulesOpen) {
+    isRulesOpen = false;
+    rulesBG.classList.remove('!block');
+    rules.classList.remove('!flex');
+  }
+})
+
+rulesBG.addEventListener('click', (event) => {
+  if (event.target === rulesBG) {
+    isRulesOpen = false;
+    rulesBG.classList.remove('!block');
+    rules.classList.remove('!flex');
+  }
+})

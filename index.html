@@ -45,7 +45,7 @@
   <style type="text/tailwindcss">
     @layer components {
       .game-button {
-        @apply shadow-[inset_0_-0.375rem_rgba(0,0,0,0.15)] bg-gradient-to-b  p-[min(3vw,_0.625rem)] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] max-w-[7.5rem] max-h-[7.5rem] z-0
+        @apply shadow-[inset_0_-0.375rem_rgba(0,0,0,0.15)] bg-gradient-to-b  p-[min(3vw,_0.625rem)] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] z-0 md:w-[min(40vw,_10rem)] md:h-[min(40vw,_10rem)] md:p-[min(3vw,_1rem)]
       }
 
       .game-button.paper {
@@ -69,19 +69,19 @@
       }
 
       .game-button div {
-        @apply bg-white shadow-[inset_0_0.25rem_rgba(0,0,0,0.15)] rounded-full w-full h-full max-w-[7.5rem] max-h-[7.5rem] flex items-center justify-center
+        @apply bg-white shadow-[inset_0_0.25rem_rgba(0,0,0,0.15)] rounded-full w-full h-full  flex items-center justify-center
       }
 
       .game-button div img {
-        @apply object-cover max-w-[min(50%,_2.5rem)]
+        @apply object-cover max-w-[min(50%,_2.5rem)] md:max-w-[min(50%,_7.5rem)]
       }
 
       .loading-pick {
-        @apply bg-[rgba(0,0,0,0.15)] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] flex items-center justify-center z-[1]
+        @apply bg-[rgba(0,0,0,0.15)] rounded-full w-[min(30vw,_7.5rem)] h-[min(30vw,_7.5rem)] flex items-center justify-center z-[1] md:h-[min(40vw,_15rem)] md:w-[min(40vw,_15rem)]
       }
 
-      .advanced-button {
-        @apply absolute
+      .loading-pick.game-button div img {
+        @apply md:w-full md:!max-w-[8rem]
       }
     }
 
@@ -109,118 +109,157 @@
         z-index: -1;
         box-shadow: 0 0 0 0.75rem #293251 , 0 0 0 1.5rem #232c4b, 0 0 0 2.25rem #1e2949;
       }
+
+      @media only screen and (min-width: 768px) {
+        body:has(#rules-bg.\!block) {
+          overflow-y: hidden;
+        }
+
+        header:not(:has(span.advanced.\!hidden)) div span {
+          font-size: 6.75rem;
+          line-height: 1;
+        }
+
+        .larger-triangle,
+        .larger-triangle::before {
+          width: 400px !important;
+          height: 400px !important;
+        }
+
+        .larger-pentagon,
+        .larger-pentagon::before {
+          width: 400px !important;
+          height: 400px !important;
+        }
+
+        .winner-pick::before {
+          box-shadow: 0 0 0 2rem #293251 , 0 0 0 3.5rem #232c4b, 0 0 0 5rem #1e2949;
+        }
+      }
     }
   </style>
 </head>
 <body>
-  <section class="w-full h-full min-h-screen bg-gradient-to-b from-radial-gradient-from to-radial-gradient-to p-8 flex flex-col justify-between gap-20 relative">
-    <div id="rules" class="h-full w-full hidden bg-white fixed inset-0 flex-col items-center justify-between gap-8 p-10 py-14 z-[999]">
-      <h4 class="uppercase text-dark-text text-3xl font-bold">Rules</h4>
-      <img src="./images/image-rules.svg" alt="Rules: scissors beats paper, papel beats rock, rock beats scissors" class="max-w">
-      <button id="close-rules">
-        <img src="./images/icon-close.svg" alt="close">
-      </button>
+  <section class="w-[full] h-[full] min-h-screen bg-gradient-to-b from-radial-gradient-from to-radial-gradient-to p-8 flex flex-col justify-between gap-20 relative">
+    <div id="rules-bg" class="w-screen h-screen bg-[rgba(0,0,0,0.4)] fixed z-[998] hidden top-0 left-0">
+      <div id="rules" class="h-full w-full hidden bg-white fixed inset-0 flex-col items-center justify-between gap-8 p-10 py-14 z-[999] md:w-[max-content] md:h-[max-content] md:p-5 md:py-5 md:top-[50%] md:left-[50%] md:translate-x-[-50%] md:translate-y-[-50%] md:rounded-xl">
+        <header class="flex item-center justify-center md:justify-between w-full">
+          <h4 class="uppercase text-dark-text text-3xl font-bold">Rules</h4>
+          <button class="close-rules max-md:hidden">
+            <img src="./images/icon-close.svg" alt="close">
+          </button>
+        </header>
+        <img src="./images/image-rules.svg" alt="Rules: scissors beats paper, papel beats rock, rock beats scissors" class="max-w">
+        <button class="close-rules md:hidden">
+          <img src="./images/icon-close.svg" alt="close">
+        </button>
+      </div>
     </div>
 
-    <header id="header" class="border-2 border-solid border-header-outline rounded p-2 pl-4 min-w-[min-content] gap-x-2 w-[calc(100vw_-_4rem)] grid grid-cols-2 items-center">
+    <header id="header" class="border-2 border-solid border-header-outline rounded p-2 pl-4 min-w-[min-content] gap-x-2 w-full grid grid-cols-2 items-center max-w-[calc(768px_-_64px)] md:self-center md:rounded-xl md:p-4">
       <h1 class="text-white leading-4 font-bold uppercase flex flex-col gap-[0.1rem]">
-        <span class="w-full truncate">Rock</span>
-        <span class="w-full truncate">Paper</span>
-        <span class="w-full truncate">Scissors</span>
-        <span class="w-full truncate advanced !hidden">Lizard</span>
-        <span class="w-full truncate advanced !hidden">Spock</span>
+        <span class="w-full md:text-4xl md:!leading-7 truncate">Rock</span>
+        <span class="w-full md:text-4xl md:!leading-7 truncate">Paper</span>
+        <span class="w-full md:text-4xl md:!leading-7 truncate">Scissors</span>
+        <span class="w-full md:text-4xl md:!leading-7 truncate advanced !hidden">Lizard</span>
+        <span class="w-full md:text-4xl md:!leading-7 truncate advanced !hidden">Spock</span>
       </h1>
-      <div class="place-self-end flex flex-col items-center justify-between bg-white rounded py-1 px-4 max-w-full h-full w-[80px]">
-        <strong class="text-score-text uppercase text-[0.625rem] font-bold">Score</strong>
-        <span id="score" class="text-dark-text text-4xl font-bold max-w-full truncate">0</span>
+      <div class="place-self-end flex flex-col items-center justify-between bg-white rounded py-1 px-4 max-w-full h-full w-[80px] md:w-[120px] md:py-2">
+        <strong class="text-score-text uppercase text-[0.625rem] font-bold md:text-[1rem] md:tracking-[0.1rem]">Score</strong>
+        <span id="score" class="text-dark-text text-4xl font-bold max-w-full truncate md:flex-1 md:text-6xl md:leading-[0.75]">0</span>
       </div>
     </header>
 
     <main id="main">
-      <div id="normal-first-step" class="flex justify-center items-center flex-wrap gap-x-[3.125rem] gap-y-[1.563rem] relative z-[0] before:content-[''] before:bg-[url('./images/bg-triangle.svg')] before:bg-cover before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[min(12.5rem,_100%)] before:h-[min(12.5rem,_100%)]">
-        <button id="paper-button" class="game-button paper">
+      <div id="normal-first-step" class="w-[min(313px,_100%)] h-[278px] mx-auto relative z-[0] before:content-[''] before:bg-[url('./images/bg-triangle.svg')] before:bg-contain before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[min(313px,_100%)] before:h-full larger-triangle">
+        <button id="paper-button" class="game-button paper absolute top-[-20px] left-[-10px]">
           <div>
             <img src="./images/icon-paper.svg" />
           </div>
         </button>
 
-        <button id="scissors-button" class="game-button scissors">
+        <button id="scissors-button" class="game-button scissors absolute top-[-20px] right-[-10px]">
           <div>
             <img src="./images/icon-scissors.svg" />
           </div>
         </button>
 
-        <button id="rock-button" class="game-button rock">
+        <button id="rock-button" class="game-button rock absolute bottom-0 left-[50%] translate-x-[-50%]">
           <div>
             <img src="./images/icon-rock.svg" />
           </div>
         </button>
       </div>
 
-      <div id="advanced-first-step" class="!hidden w-[min(329px,_100%)] h-[313px] mx-auto relative z-[0] before:content-[''] before:bg-[url('./images/bg-pentagon.svg')] before:bg-cover before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[329px] before:h-[313px] before:max-w-full before:max-h-full before:top-0 before:left-[50%] before:translate-x-[-50%]">
+      <div id="advanced-first-step" class="!hidden w-[min(329px,_100%)] h-[313px] mx-auto relative z-[0] before:content-[''] before:bg-[url('./images/bg-pentagon.svg')] before:bg-contain before:bg-center before:bg-no-repeat before:absolute before:z-[-1] before:w-[min(329px,_100%)] before:h-full before:top-0 before:left-[50%] before:translate-x-[-50%] larger-pentagon">
 
-        <button id="advanced-paper-button" class="game-button paper advanced-button top-[-30px] left-[50%] translate-x-[-50%]">
-          <div>
-            <img src="./images/icon-paper.svg" />
-          </div>
-        </button>
-
-        <button id="advanced-scissors-button" class="game-button scissors advanced-button top-[70px] left-[max(calc(50%_-_170px),_1vw)] translate-x-[-max(calc(50%_-_170px),_1vw)]">
+        <button id="advanced-scissors-button" class="game-button scissors absolute top-[-30px] left-[50%] translate-x-[-50%]">
           <div>
             <img src="./images/icon-scissors.svg" />
           </div>
         </button>
 
-        <button id="advanced-rock-button" class="game-button rock advanced-button top-[210px] left-[max(calc(50%_-_140px),_1vw)] translate-x-[-max(calc(50%_-_140px),_1vw)]">
+        <button id="advanced-spock-button" class="game-button spock absolute top-[70px] left-[max(calc(50%_-_170px),_1%)] translate-x-[-max(calc(50%_-_170px),_1%)] md:left-[calc(50%_-_250px)] md:translate-x-[-calc(50%_-_250px)]">
           <div>
-            <img src="./images/icon-rock.svg" />
+            <img src="./images/icon-spock.svg" />
           </div>
         </button>
 
-        <button id="advanced-lizard-button" class="game-button lizard advanced-button top-[70px] right-[max(calc(50%_-_170px),_1vw)]">
+        <button id="advanced-lizard-button" class="game-button lizard absolute top-[210px] left-[max(calc(50%_-_140px),_10%)] translate-x-[-max(calc(50%_-_140px),_10%)] md:top-[270px] md:left-[calc(50%_-_200px)] md:translate-x-[-calc(50%_-_200px)]">
           <div>
             <img src="./images/icon-lizard.svg" />
           </div>
         </button>
 
-        <button id="advanced-spock-button" class="game-button spock advanced-button top-[210px] right-[max(calc(50%_-_140px),_1vw)]">
+        <button id="advanced-paper-button" class="game-button paper absolute top-[70px] right-[max(calc(50%_-_170px),_1%)] md:right-[calc(50%_-_250px)]">
           <div>
-            <img src="./images/icon-spock.svg" />
+            <img src="./images/icon-paper.svg" />
+          </div>
+        </button>
+
+        <button id="advanced-rock-button" class="game-button rock absolute top-[210px] right-[max(calc(50%_-_140px),_10%)] md:top-[270px] md:right-[calc(50%_-_200px)]">
+          <div>
+            <img src="./images/icon-rock.svg" />
           </div>
         </button>
       </div>
 
       <div id="second-step" class="hidden justify-center gap-x-[3.125rem]">
-        <div class="flex flex-col items-center gap-4">
+        <div class="flex flex-col items-center gap-4 md:flex-col-reverse md:gap-8">
           <div id="your-pick" class="loading-pick">
             <div>
               <img src="" alt="">
             </div>
           </div>
-          <strong class="font-bold uppercase text-white text tracking-[0.1rem] text-center z-0 text-[0.625rem]">You picked</strong>
+          <strong class="font-bold uppercase text-white text tracking-[0.1rem] text-center z-0 text-[0.625rem] md:text-lg">You picked</strong>
         </div>
 
-        <div class="flex flex-col items-center gap-4">
+        <div class="results hidden flex-col justify-center gap-3 z-[1] max-md:!hidden">
+          <h4 class="font-bold text-5xl uppercase text-white text-center"></h4>
+          <button class="play-again bg-white text-dark-text rounded-md py-2 uppercase tracking-[0.1rem]">Play again</button>
+        </div>
+
+        <div class="flex flex-col items-center gap-4 md:flex-col-reverse md:gap-8">
           <div id="house-pick" class="loading-pick">
             <div>
               <img src="" alt="">
             </div>
           </div>
-          <strong class="font-bold uppercase text-white text tracking-[0.1rem] text-center z-0 text-[0.625rem]">The house picked</strong>
+          <strong class="font-bold uppercase text-white text tracking-[0.1rem] text-center z-0 text-[0.625rem] md:text-lg">The house picked</strong>
         </div>
       </div>
     </main>
 
     <footer id="footer" class="flex-1 flex flex-col items-center justify-end gap-16">
-      <div id="results" class="hidden flex-col justify-center gap-3">
+      <div class="results hidden flex-col justify-center gap-3 z-[1] md:!hidden">
         <h4 class="font-bold text-5xl uppercase text-white text-center"></h4>
-        <button id="play-again" class="bg-white text-dark-text rounded-md py-2 uppercase tracking-[0.1rem]">Play again</button>
+        <button class="play-again bg-white text-dark-text rounded-md py-2 uppercase tracking-[0.1rem]">Play again</button>
       </div>
-      <div class="grid grid-cols-2 items-center justify-between gap-2 w-full">
+      <div class="grid grid-cols-2 items-center justify-between gap-2 w-full self-end md:w-[max(25%,_220px_+_0.5rem)]">
         <button id="toggle-mode" class="uppercase border-white border-[0.063rem] border-solid rounded-md text-white font-bold p-1 tracking-[0.2rem] truncate">
           Advanced
         </button>
-        <button id="show-rules" class="uppercase border-white border-[0.063rem] border-solid rounded-md text-white font-bold p-1 tracking-[0.2rem]">
+        <button id="show-rules" class="uppercase border-white border-[0.063rem] border-solid rounded-md text-white font-bold p-1 tracking-[0.2rem] truncate">
           Rules
         </button>
       </div>
